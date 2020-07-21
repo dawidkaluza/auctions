@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Dodaj adres</h1>
+<form th:replace="user/my-account/forms/address-form :: addressForm (action = @{/user/my-account/address/add}, form = ${form}, submit = 'Dodaj')"> </form>
+</body>
+</html>

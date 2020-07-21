@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<form th:fragment="addressForm (action, form, submit)" th:action="${action}" th:object="${form}" method="post">
+    <table>
+        <tr>
+            <td>Ulica:</td>
+            <td><input type="text" th:field="*{street}"/></td>
+            <td th:errors="*{street}"></td>
+        </tr>
+        <tr>
+            <td>Kod pocztowy:</td>
+            <td><input type="text" th:field="*{zipcode}"/></td>
+            <td th:errors="*{zipcode}"></td>
+        </tr>
+        <tr>
+            <td>Miasto:</td>
+            <td><input type="text" th:field="*{city}"/></td>
+            <td th:errors="*{city}"></td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">${submit}</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<!--
+TODO formularz z dodawaniem/edytowaniem adresu na podstawie atrybutu "action"
+ - formularz z dodawaniem/edytowaniem adresu
+    method: POST
+    action: /user/address/add dla dodawania, /user/address/ + ${form.id} + edit dla edycji
+    pola:
+     - id (hidden dla edycji)
+     - street (ulica)
+     - zipcode (kod pocztowy)
+     - city (miasto)
+-->
+</body>
+</html>

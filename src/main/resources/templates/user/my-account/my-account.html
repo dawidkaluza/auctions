@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My account</title>
+</head>
+<body>
+<ul th:each="address: ${addresses}">
+    <li th:text="${address.street + ', ' + address.zipcode + ' ' + address.city}"></li>
+</ul>
+
+<ul th:each="bankAccount: ${bankAccounts}">
+    <li th:text="${bankAccount.bankName + ', nr konta: ' + bankAccount.iban}"></li>
+</ul>
+
+<ul th:each="creditCard: ${creditCards}">
+    <li th:text="${'Number: ' + creditCard.number}"></li>
+</ul>
+<!--
+TODO info o koncie,
+    lista adresow z guzikami:
+        edytuj: przekierowanie na user/my-account/address/{id}/edit, pole id jako hidden
+        usun: formularz POST, action: user/my-account/address/{id}/delete, pole id jako hidden
+        dodaj: przekierowanie na user/my-account/address/add,
+    lista kont bankowych z guzikami:
+        edytuj: przekierowanie na user/my-account/address/{id}/edit, pole id jako hidden
+        usun: formularz POST, action: user/my-account/address/{id}/delete, pole id jako hidden
+        dodaj: przekierowanie na user/my-account/address/add,
+    lista kart kredytowych z guzikami:
+        edytuj: przekierowanie na user/my-account/address/{id}/edit, pole id jako hidden
+        usun: formularz POST, action: user/my-account/address/{id}/delete, pole id jako hidden
+        dodaj: przekierowanie na user/my-account/address/add,
+-->
+</body>
+</html>

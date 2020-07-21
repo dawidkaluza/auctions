@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Rejestracja</h1>
+<form action="#" th:action="@{/register}" th:object="${form}" method="post">
+    <table>
+        <tr>
+            <td>Imie:</td>
+            <td><input type="text" th:field="*{firstName}" /></td>
+            <td th:errors="*{firstName}"></td>
+        </tr>
+        <tr>
+            <td>Nazwisko:</td>
+            <td><input type="text" th:field="*{lastName}" /></td>
+            <td th:errors="*{lastName}"></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" th:field="*{email}" /></td>
+            <td th:errors="*{email}"></td>
+        </tr>
+        <tr>
+            <td>Haslo:</td>
+            <td><input type="text" th:field="*{password}" /></td>
+            <td th:errors="*{password}"></td>
+        </tr>
+        <tr>
+            <td>Powtorz haslo:</td>
+            <td><input type="text" th:field="*{repeatedPassword}" /></td>
+            <td th:errors="*{repeatedPassword}"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Wyslij</button></td>
+        </tr>
+    </table>
+</form>
+<!--
+    TODO formularz do rejestracji
+     - action: register
+     - method: POST
+     - pola
+      - firstName (imie)
+      - lastName (nazwisko)
+      - email
+      - password (haslo)
+      - repeatedPassword (Powtorz haslo)
+-->
+</body>
+</html>
