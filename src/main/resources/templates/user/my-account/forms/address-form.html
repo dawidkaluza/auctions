@@ -1,29 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<form th:fragment="addressForm (action, form, submit)" th:action="${action}" th:object="${form}" method="post">
-    <table>
-        <tr>
-            <td>Ulica:</td>
-            <td><input type="text" th:field="*{street}"/></td>
-            <td th:errors="*{street}"></td>
-        </tr>
-        <tr>
-            <td>Kod pocztowy:</td>
-            <td><input type="text" th:field="*{zipcode}"/></td>
-            <td th:errors="*{zipcode}"></td>
-        </tr>
-        <tr>
-            <td>Miasto:</td>
-            <td><input type="text" th:field="*{city}"/></td>
-            <td th:errors="*{city}"></td>
-        </tr>
-        <tr>
-            <td>
-                <button type="submit">${submit}</button>
-            </td>
-        </tr>
-    </table>
+<form th:fragment="addressForm (action, form)" th:action="${action}" th:object="${form}" method="post">
+    <div style="display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; flex-direction: row; width: 80%">
+            <div style="width: 50%">
+                Ulica:
+            </div>
+            <div style="width: 50%">
+                <input type="text" th:field="*{street}"/>
+            </div>
+        </div>
+        <div style="width: 100%">
+            <span th:errors="*{street}"></span>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; flex-direction: row; width: 80%">
+            <div style="width: 50%">
+                Kod pocztowy:
+            </div>
+            <div style="width: 50%">
+                <input type="text" th:field="*{zipcode}"/>
+            </div>
+        </div>
+        <div style="width: 100%">
+            <span th:errors="*{zipcode}"></span>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: space-between">
+        <div style="display: flex; flex-direction: row; width: 80%">
+            <div style="width: 50%">
+                Miasto:
+            </div>
+            <div style="width: 50%">
+                <input type="text" th:field="*{city}"/>
+            </div>
+        </div>
+        <div style="width: 100%">
+            <span th:errors="*{city}"></span>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: space-between">
+        <div style="width: 100%">
+            <input type="submit" value="Wyślij">
+        </div>
+    </div>
 </form>
 <!--
 TODO formularz z dodawaniem/edytowaniem adresu na podstawie atrybutu "action"
