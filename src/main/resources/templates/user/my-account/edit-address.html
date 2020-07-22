@@ -6,6 +6,13 @@
 </head>
 <body>
 <h1>Edytuj adres</h1>
-<form th:replace="user/my-account/forms/address-form :: addressForm (action = @{'/user/my-account/address/' + ${form.id} + '/edit', form = ${form}, submit = 'Edytuj')"></form>
+<form th:action="@{/user/my-account/address/}" th:object="${form}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <div th:insert="forms/form-field :: formField ('Ulica', 'street')"></div>
+    <div th:insert="forms/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
+    <div th:insert="forms/form-field :: formField ('Miasto', 'city')"></div>
+    <input type="submit" value="Wyślij">
+</form>
+
 </body>
 </html>

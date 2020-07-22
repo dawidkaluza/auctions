@@ -96,7 +96,7 @@ public class UserController {
     @GetMapping("user/my-account")
     public String getMyAccount(Model model) {
         //TODO get id from session
-        Optional<User> optionalUser = userService.findById(3L);
+        Optional<User> optionalUser = userService.findById(1L);
         optionalUser.ifPresent(user -> {
             model.addAttribute("user", user);
             model.addAttribute("addresses", addressService.findAllByUser(user));
@@ -123,7 +123,7 @@ public class UserController {
         }
 
         //TODO get id from session
-        Optional<User> optionalUser = userService.findById(3L);
+        Optional<User> optionalUser = userService.findById(1L);
         optionalUser.ifPresent(user -> {
             addressService.save(
                 new Address(
@@ -136,48 +136,58 @@ public class UserController {
         });
         return "user/my-account/my-account";
     }
-//
-//    @GetMapping("user/my-account/address/{id}/edit")
-//    public String getEditAddress(
-//        @PathVariable("id") Long id,
-//        Model model
-//    ) {
-//        model.addAttribute("form", new AddressForm());
-//        Optional<Address> optionalAddress = addressService.findById(id);
-//        optionalAddress.ifPresent(address -> model.addAttribute("address", address));
-//        return "user/my-account/address-form";
-//    }
-//
-//    @PostMapping("user/my-account/address/{id}/edit")
-//    public String postEditAddress(
-//        @PathVariable("id") Long id,
-//        @ModelAttribute("form") @Valid AddressForm form,
-//        BindingResult result,
-//        Model model
-//    ) {
-//        if(result.hasErrors()) {
-//            return "user/my-account/address-form";
-//        }
-//
-//        Optional<Address> optionalAddress = addressService.findById(id);
-//        if(!optionalAddress.isPresent()) {
-//            model.addAttribute(
-//                "result",
-//                new RequestResult("Nie znaleziono podanego adresu", RequestResult.Status.ERROR)
-//            );
-//            return "user/my-account/address-form";
-//        }
-//
-//        Optional<User> optionalUser = userService.findById(1L);
-//        optionalUser.ifPresent(user -> {
-//            Address address = optionalAddress.get();
-//            address.setStreet(form.getStreet());
-//            address.setZipcode(form.getZipcode());
-//            address.setCity(form.getCity());
-//            addressService.save(address);
-//        });
-//        return "user/my-account/my-account";
-//    }
+
+    @GetMapping("user/my-account/address/{id}/edit")
+    public String getEditAddress(
+        @PathVariable("id") Long id,
+        Model model
+    ) {
+        AddressForm form = new AddressForm();
+        Optional<Address> optionalAddress = addressService.findById(id);
+        if(optionalAddress.isPresent()) {
+            Address address = optionalAddress.get();
+            form.setId(address.getId());
+            form.setStreet(address.getStreet());
+            form.setZipcode(address.getZipcode());
+            form.setCity(address.getCity());
+        }
+        //TODO throw exception if address doesnt exist
+
+        model.addAttribute("form", form);
+        return "user/my-account/edit-address";
+    }
+
+    @PostMapping("user/my-account/address/{id}/edit")
+    public String postEditAddress(
+        @PathVariable("id") Long id,
+        @ModelAttribute("form") @Valid AddressForm form,
+        BindingResult result,
+        Model model
+    ) {
+        if(result.hasErrors()) {
+            return "user/my-account/edit-address";
+        }
+
+        Optional<Address> optionalAddress = addressService.findById(id);
+        if(!optionalAddress.isPresent()) {
+            //TODO throw exception
+            model.addAttribute(
+                "result",
+                new RequestResult("Nie znaleziono podanego adresu", RequestResult.Status.ERROR)
+            );
+            return "user/my-account/edit-address";
+        }
+
+        Optional<User> optionalUser = userService.findById(1L);
+        optionalUser.ifPresent(user -> {
+            Address address = optionalAddress.get();
+            address.setStreet(form.getStreet());
+            address.setZipcode(form.getZipcode());
+            address.setCity(form.getCity());
+            addressService.save(address);
+        });
+        return "user/my-account/my-account";
+    }
 
     @PostMapping("user/my-account/address/{id}/delete")
     public String postDeleteAddress(@PathVariable("id") Long id) {

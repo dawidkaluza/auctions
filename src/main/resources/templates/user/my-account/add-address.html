@@ -7,12 +7,11 @@
 <body>
 <h1>Dodaj adres</h1>
 <form th:action="@{/user/my-account/address/add}" th:object="${form}" method="post">
-    <div th:insert="user/my-account/forms/form-field :: formField ('Ulica', 'street')"></div>
-    <div th:insert="user/my-account/forms/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
-    <div th:insert="user/my-account/forms/form-field :: formField ('Miasto', 'city')"></div>
+    <div th:insert="forms/form-field :: formField ('Ulica', 'street')"></div>
+    <div th:insert="forms/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
+    <div th:insert="forms/form-field :: formField ('Miasto', 'city')"></div>
     <input type="submit" value="Wyślij">
 </form>
 
-<!--<form th:replace="user/my-account/forms/address-form :: addressForm (action = @{/user/my-account/address/add}, form = ${form}, submit = 'Dodaj')"></form>-->
 </body>
 </html>

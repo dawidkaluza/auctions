@@ -7,6 +7,10 @@
 <body>
 <ul th:each="address: ${addresses}">
     <li th:text="${address.street + ', ' + address.zipcode + ' ' + address.city}"></li>
+    <form th:action="@{'/user/my-account/address/' + ${address.id} + '/delete'}" method="post">
+        <input type="hidden" name="id" th:value="${address.id}">
+        <input type="submit" value="Usun">
+    </form>
 </ul>
 
 <ul th:each="bankAccount: ${bankAccounts}">
