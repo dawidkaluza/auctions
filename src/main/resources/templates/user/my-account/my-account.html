@@ -7,19 +7,19 @@
 <body>
 <ul th:each="address: ${addresses}">
     <li th:text="${address.street + ', ' + address.zipcode + ' ' + address.city}"></li>
-    <form th:action="@{'/user/my-account/address/' + ${address.id} + '/delete'}" method="post">
-        <input type="hidden" name="id" th:value="${address.id}">
-        <input type="submit" value="Usun">
-    </form>
+    <a th:href="@{'/user/my-account/address/' + ${address.id} + '/delete'}">Usun</a>
 </ul>
 
 <ul th:each="bankAccount: ${bankAccounts}">
     <li th:text="${bankAccount.bankName + ', nr konta: ' + bankAccount.iban}"></li>
+    <a th:href="@{'/user/my-account/bank-account/' + ${bankAccount.id} + '/delete'}">Usun</a>
 </ul>
 
 <ul th:each="creditCard: ${creditCards}">
     <li th:text="${'Number: ' + creditCard.number}"></li>
+    <a th:href="@{'/user/my-account/credit-card/' + ${creditCard.id} + '/delete'}">Usun</a>
 </ul>
+
 <!--
 TODO info o koncie,
     lista adresow z guzikami:
