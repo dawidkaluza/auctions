@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
+<h1>Dodaj konto </h1>
+<form th:action="@{/user/my-account/bank-account/add}" th:object="${form}" method="post">
+    <div th:insert="fragments/form-field :: formField ('Nazwa banku', 'bankName')"></div>
+    <div th:insert="fragments/form-field :: formField ('SWIFT', 'swiftCode')"></div>
+    <div th:insert="fragments/form-field :: formField ('IBAN', 'iban')"></div>
+    <input type="submit" value="Wyślij">
+</form>
 <!--
 TODO formularz
     method=post

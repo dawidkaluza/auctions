@@ -8,9 +8,9 @@
 <h1>Edytuj adres</h1>
 <form th:action="@{/user/my-account/address/}" th:object="${form}" method="post">
     <input type="hidden" th:field="*{id}">
-    <div th:insert="forms/form-field :: formField ('Ulica', 'street')"></div>
-    <div th:insert="forms/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
-    <div th:insert="forms/form-field :: formField ('Miasto', 'city')"></div>
+    <div th:insert="fragments/form-field :: formField ('Ulica', 'street')"></div>
+    <div th:insert="fragments/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
+    <div th:insert="fragments/form-field :: formField ('Miasto', 'city')"></div>
     <input type="submit" value="Wyślij">
 </form>
 
