@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Podgląd</title>
 </head>
 <body>
+<h1 th:text="${'Przedmiot: ' + item.name}"></h1>
+<ul th:each="image: ${images}">
+    <li th:text="${image.fileName}"></li>
+</ul>
 <!--
 TODO strona gdzie bedzie mozna podejrzec przedmiot
 -->

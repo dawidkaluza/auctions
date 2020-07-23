@@ -20,7 +20,7 @@ public class CreditCard {
     @Column(nullable = false)
     private YearMonth expireDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private User user;
 
     protected CreditCard() {

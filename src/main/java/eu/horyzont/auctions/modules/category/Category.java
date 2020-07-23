@@ -11,7 +11,7 @@ public class Category {
     @Column(length = 64, nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Category category;
 
     protected Category() {

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<h1>Przedmioty: </h1>
+<ul th:each="item: ${items}">
+    <li th:text="${'Oferta: ' + item.name}"></li>
+</ul>
 <!--
 TODO lista z aktywnymi przedmiotami i mala szukajka z kategoriami, stronnicowaniem itd
 -->

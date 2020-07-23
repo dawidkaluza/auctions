@@ -19,7 +19,7 @@ public class BankAccount {
     @Column(length = 28, nullable = false, unique = true)
     private String iban;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private User user;
 
     protected BankAccount() {

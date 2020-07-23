@@ -11,7 +11,7 @@ public class ItemImage {
     @Column(nullable = false)
     private String fileName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private Item item;
 
     protected ItemImage() {

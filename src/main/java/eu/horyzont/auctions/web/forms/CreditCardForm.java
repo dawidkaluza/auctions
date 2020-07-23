@@ -51,4 +51,9 @@ public class CreditCardForm {
     public void setExpireDate(String expireDate) {
         this.expireDate = expireDate;
     }
+
+    //TODO write it better
+    public void setExpireDate(YearMonth expireDate) {
+        this.expireDate = expireDate.getMonthValue() + "/" + expireDate.getYear();
+    }
 }

@@ -1,4 +1,4 @@
-package eu.horyzont.auctions.web;
+package eu.horyzont.auctions.web.controllers;
 
 import eu.horyzont.auctions.modules.payment.BankAccount;
 import eu.horyzont.auctions.modules.payment.BankAccountService;
@@ -21,76 +21,18 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-public class UserController {
+public class MyAccountController {
     private final UserService userService;
     private final AddressService addressService;
     private final BankAccountService bankAccountService;
     private final CreditCardService creditCardService;
 
     @Autowired
-    public UserController(UserService userService, AddressService addressService, BankAccountService bankAccountService, CreditCardService creditCardService) {
+    public MyAccountController(UserService userService, AddressService addressService, BankAccountService bankAccountService, CreditCardService creditCardService) {
         this.userService = userService;
         this.addressService = addressService;
         this.bankAccountService = bankAccountService;
         this.creditCardService = creditCardService;
-    }
-
-    @GetMapping("register")
-    public String getRegistration(Model model) {
-        model.addAttribute("form", new RegistrationForm());
-        return "user/registration/registration";
-    }
-
-    @PostMapping("register")
-    public String postRegistration(
-        @ModelAttribute("form") @Valid RegistrationForm form,
-        BindingResult result
-    ) {
-        if(result.hasErrors()) {
-            return "user/registration/registration";
-        }
-
-        if(!form.getPassword().equals(form.getRepeatedPassword())) {
-            result.addError(
-                new ObjectError(
-                    "repeatedPassword",
-                    "Podane hasła różnią się"
-                )
-            );
-            return "user/registration/registration";
-        }
-
-        Optional<User> optionalUser = userService.findByEmail(form.getEmail());
-        if(optionalUser.isPresent()) {
-            result.addError(
-                new ObjectError(
-                    "email",
-                    "Istnieje już konto z podanym adresem e-mail"
-                )
-            );
-            return "user/registration/registration";
-        }
-
-        User user = new User(form.getFirstName(), form.getLastName(), form.getEmail(), form.getPassword());
-        userService.save(user);
-        return "user/registration/result";
-    }
-
-    @GetMapping("login")
-    public String getLogin(Model model) {
-        model.addAttribute("form", new LoginForm());
-        return "user/login/login";
-    }
-
-    @PostMapping("login")
-    public String postLogin(
-        @ModelAttribute("form") @Valid LoginForm form,
-        BindingResult result,
-        Model model
-    ) {
-        Optional<User> user = userService.findByEmailAndPassword(form.getEmail(), form.getPassword());
-        //TODO add to session or sth
-        return "index";
     }
 
     @GetMapping("user/my-account")
@@ -151,7 +93,7 @@ public class UserController {
             form.setZipcode(address.getZipcode());
             form.setCity(address.getCity());
         }
-        //TODO throw exception if address doesnt exist
+        //TODO throw exception or sth like that if address doesnt exist
 
         model.addAttribute("form", form);
         return "user/my-account/edit-address";
@@ -170,11 +112,11 @@ public class UserController {
 
         Optional<Address> optionalAddress = addressService.findById(id);
         if(!optionalAddress.isPresent()) {
-            //TODO throw exception
-            model.addAttribute(
-                "result",
-                new RequestResult("Nie znaleziono podanego adresu", RequestResult.Status.ERROR)
-            );
+            //TODO throw exception or add notification maybee
+//            model.addAttribute(
+//                "result",
+//                new RequestResult("Nie znaleziono podanego adresu", RequestResult.Status.ERROR)
+//            );
             return "user/my-account/edit-address";
         }
 
@@ -189,8 +131,8 @@ public class UserController {
         return "user/my-account/my-account";
     }
 
-    @PostMapping("user/my-account/address/{id}/delete")
-    public String postDeleteAddress(@PathVariable("id") Long id) {
+    @GetMapping("user/my-account/address/{id}/delete")
+    public String getDeleteAddress(@PathVariable("id") Long id) {
         Optional<Address> optionalAddress = addressService.findById(id);
         optionalAddress.ifPresent(addressService::delete);
         return "user/my-account/my-account";
@@ -199,7 +141,7 @@ public class UserController {
     @GetMapping("user/my-account/bank-account/add")
     public String getAddBankAccount(Model model) {
         model.addAttribute("form", new BankAccountForm());
-        return "user/my-account/bank-account-form";
+        return "user/my-account/add-bank-account";
     }
 
     @PostMapping("user/my-account/bank-account/add")
@@ -208,7 +150,7 @@ public class UserController {
         BindingResult result
     ) {
         if(result.hasErrors()) {
-            return "user/my-account/bank-account-form";
+            return "user/my-account/add-bank-account";
         }
 
         //TODO get id from session
@@ -231,10 +173,16 @@ public class UserController {
         @PathVariable("id") Long id,
         Model model
     ) {
-        model.addAttribute("form", new BankAccountForm());
+        BankAccountForm form = new BankAccountForm();
         Optional<BankAccount> optionalBankAccount = bankAccountService.findById(id);
-        optionalBankAccount.ifPresent(bankAccount -> model.addAttribute("bankAccount", bankAccount));
-        return "user/my-account/bank-account-form";
+        optionalBankAccount.ifPresent(bankAccount -> {
+            form.setId(bankAccount.getId());
+            form.setBankName(bankAccount.getBankName());
+            form.setIban(bankAccount.getIban());
+            form.setSwiftCode(bankAccount.getSwiftCode());
+        });
+        model.addAttribute("form", new BankAccountForm());
+        return "user/my-account/edit-bank-account";
     }
 
     @PostMapping("user/my-account/bank-account/{id}/edit")
@@ -245,15 +193,16 @@ public class UserController {
         Model model
     ) {
         if(result.hasErrors()) {
-            return "user/my-account/bank-account-form";
+            return "user/my-account/edit-bank-account";
         }
 
         Optional<BankAccount> optionalBankAccount = bankAccountService.findById(id);
         if(!optionalBankAccount.isPresent()) {
-            model.addAttribute(
-                "result",
-                new RequestResult("Nie znaleziono podanego konta", RequestResult.Status.ERROR)
-            );
+            //TODO throw exception or add notification maybee
+//            model.addAttribute(
+//                "result",
+//                new RequestResult("Nie znaleziono podanego konta", RequestResult.Status.ERROR)
+//            );
             return "user/my-account/bank-account-form";
         }
 
@@ -268,8 +217,8 @@ public class UserController {
         return "user/my-account/my-account";
     }
 
-    @PostMapping("user/my-account/bank-account/{id}/delete")
-    public String postDeleteBankAccount(@PathVariable("id") Long id) {
+    @GetMapping("user/my-account/bank-account/{id}/delete")
+    public String getDeleteBankAccount(@PathVariable("id") Long id) {
         Optional<BankAccount> optionalBankAccount = bankAccountService.findById(id);
         optionalBankAccount.ifPresent(bankAccountService::delete);
         return "user/my-account/my-account";
@@ -278,7 +227,7 @@ public class UserController {
     @GetMapping("user/my-account/credit-card/add")
     public String getAddCreditCard(Model model) {
         model.addAttribute("form", new CreditCardForm());
-        return "user/my-account/credit-card-form";
+        return "user/my-account/add-credit-card";
     }
 
     @PostMapping("user/my-account/credit-card/add")
@@ -287,7 +236,7 @@ public class UserController {
         BindingResult result
     ) {
         if(result.hasErrors()) {
-            return "user/my-account/credit-card-form";
+            return "user/my-account/add-credit-card";
         }
 
         //TODO get id from session
@@ -310,10 +259,16 @@ public class UserController {
         @PathVariable("id") Long id,
         Model model
     ) {
-        model.addAttribute("form", new CreditCardForm());
+        CreditCardForm form = new CreditCardForm();
         Optional<CreditCard> optionalCreditCard = creditCardService.findById(id);
-        optionalCreditCard.ifPresent(creditCard -> model.addAttribute("creditCard", creditCard));
-        return "user/my-account/credit-card-form";
+        optionalCreditCard.ifPresent(creditCard -> {
+            form.setId(creditCard.getId());
+            form.setNumber(creditCard.getNumber());
+            form.setCvv(creditCard.getCvv());
+            form.setExpireDate(creditCard.getExpireDate());
+        });
+        model.addAttribute("form", form);
+        return "user/my-account/edit-credit-card";
     }
 
     @PostMapping("user/my-account/credit-card/{id}/edit")
@@ -324,16 +279,17 @@ public class UserController {
         Model model
     ) {
         if(result.hasErrors()) {
-            return "user/my-account/credit-card-form";
+            return "user/my-account/edit-credit-card";
         }
 
         Optional<CreditCard> optionalCreditCard = creditCardService.findById(id);
         if(!optionalCreditCard.isPresent()) {
-            model.addAttribute(
-                "result",
-                new RequestResult("Nie znaleziono podanej karty", RequestResult.Status.ERROR)
-            );
-            return "user/my-account/credit-card-form";
+            //TODO throw exception or add notification maybee
+//            model.addAttribute(
+//                "result",
+//                new RequestResult("Nie znaleziono podanej karty", RequestResult.Status.ERROR)
+//            );
+            return "user/my-account/edit-credit-card";
         }
 
         Optional<User> optionalUser = userService.findById(1L);
@@ -348,8 +304,8 @@ public class UserController {
         return "user/my-account/my-account";
     }
 
-    @PostMapping("user/my-account/credit-card/{id}/delete")
-    public String postDeleteCreditCard(@PathVariable("id") Long id) {
+    @GetMapping("user/my-account/credit-card/{id}/delete")
+    public String getDeleteCreditCard(@PathVariable("id") Long id) {
         Optional<CreditCard> optionalCreditCard = creditCardService.findById(id);
         optionalCreditCard.ifPresent(creditCardService::delete);
         return "user/my-account/my-account";

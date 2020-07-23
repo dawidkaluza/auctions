@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <!-- TODO formularz z logowaniem (POST, adres: /login, pola email i password) -->
-
+<form th:action="@{/login}" th:object="${form}" method="post">
+    <div th:insert="forms/form-field :: formField ('E-mail', 'email')"></div>
+    <div th:insert="forms/form-field :: formField ('Hasło', 'password')"></div>
+    <input type="submit" value="Wyślij">
+</form>
 </body>
 </html>

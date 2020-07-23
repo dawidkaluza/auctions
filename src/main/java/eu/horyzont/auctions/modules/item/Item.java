@@ -1,5 +1,6 @@
 package eu.horyzont.auctions.modules.item;
 
+import eu.horyzont.auctions.modules.category.Category;
 import eu.horyzont.auctions.modules.user.User;
 
 import javax.persistence.*;
@@ -20,17 +21,23 @@ public class Item {
 
     private LocalDateTime auctionEnd;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private User user;
+
+    @ManyToOne(optional = false)
+    private Category category;
+
+
 
     protected Item() {
     }
 
-    public Item(String name, BigDecimal initialPrice, LocalDateTime auctionEnd, User user) {
+    public Item(String name, BigDecimal initialPrice, LocalDateTime auctionEnd, User user, Category category) {
         this.name = name;
         this.initialPrice = initialPrice;
         this.auctionEnd = auctionEnd;
         this.user = user;
+        this.category = category;
     }
 
     public Long getId() {
@@ -65,8 +72,16 @@ public class Item {
         return user;
     }
 
-    public void setUser(User seller) {
-        this.user = seller;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

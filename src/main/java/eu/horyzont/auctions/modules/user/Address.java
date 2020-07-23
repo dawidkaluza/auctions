@@ -17,7 +17,7 @@ public class Address {
     @Column(length = 64, nullable = false)
     private String city;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private User user;
 
     protected Address() {
