@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="formField (name, fieldName)" style="display: flex; flex-direction: column; justify-content: space-between">
+<div th:fragment="formField (name, fieldName, fieldType)" style="display: flex; flex-direction: column; justify-content: space-between">
     <div style="display: flex; flex-direction: row; width: 80%">
         <div style="width: 50%">
             <span th:text="${name}"></span>
         </div>
         <div style="width: 50%">
-            <input type="text" th:field="*{__${fieldName}__}"/>
+            <input th:type="${fieldType}" th:field="*{__${fieldName}__}"/>
         </div>
     </div>
     <div style="width: 100%">

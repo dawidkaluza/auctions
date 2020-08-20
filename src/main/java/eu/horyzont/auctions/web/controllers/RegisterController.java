@@ -1,6 +1,6 @@
 package eu.horyzont.auctions.web.controllers;
 
-import eu.horyzont.auctions.modules.user.User;
+import eu.horyzont.auctions.modules.user.UserAlreadyExistsException;
 import eu.horyzont.auctions.modules.user.UserService;
 import eu.horyzont.auctions.web.forms.RegistrationForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 public class RegisterController {
@@ -33,40 +32,31 @@ public class RegisterController {
     @PostMapping("/register")
     public String postRegistration(
         @ModelAttribute("form") @Valid RegistrationForm form,
-        BindingResult result,
-        Model model
+        BindingResult result
     ) {
         if(result.hasErrors()) {
             return "user/registration/registration";
         }
 
-        //TODO check repeated passwords in Form maybeee
-        if(!form.getPassword().equals(form.getRepeatedPassword())) {
-            result.addError(
-                new ObjectError(
-                    "repeatedPassword",
-                    "Podane hasła różnią się"
-                )
+        try {
+            userService.register(form);
+        } catch (UserAlreadyExistsException e) {
+            return error(
+                result, "email",
+                "Email already exists", "user/registration/registration"
             );
-            return "user/registration/registration";
         }
 
-        //TODO check is email exists with some validator
-        Optional<User> optionalUser = userService.findByEmail(form.getEmail());
-        if(optionalUser.isPresent()) {
-            result.addError(
-                new ObjectError(
-                    "email",
-                    "Istnieje już konto z podanym adresem e-mail"
-                )
-            );
-            return "user/registration/registration";
-        }
-
-        User user = new User(form.getFirstName(), form.getLastName(), form.getEmail(), form.getPassword());
-        userService.save(user);
-
-        //TODO add notification or sth like that
         return "redirect:/login";
+    }
+
+    private String error(BindingResult result, String name, String message, String template) {
+        result.addError(
+            new ObjectError(
+                name,
+                message
+            )
+        );
+        return template;
     }
 }

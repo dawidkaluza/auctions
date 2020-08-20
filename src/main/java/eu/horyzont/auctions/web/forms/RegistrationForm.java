@@ -1,14 +1,17 @@
 package eu.horyzont.auctions.web.forms;
 
+import eu.horyzont.auctions.web.constraints.PasswordMatches;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@PasswordMatches
 public class RegistrationForm implements Serializable {
     private static final long serialVersionUID = -8582553475226281591L;
 
-    @NotNull(message = "Imie jest wymagane!")
+    @NotNull
     @Size(min = 3, max = 32)
     private String firstName;
 
@@ -23,7 +26,6 @@ public class RegistrationForm implements Serializable {
 
     @NotNull
     @Size(min = 3, max = 32)
-    //TODO add passwords validator
     private String password;
 
     @NotNull

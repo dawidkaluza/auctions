@@ -5,10 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-<!-- TODO formularz z logowaniem (POST, adres: /login, pola email i password) -->
-<form th:action="@{/login}" th:object="${form}" method="post">
-    <div th:insert="forms/form-field :: formField ('E-mail', 'email')"></div>
-    <div th:insert="forms/form-field :: formField ('Hasło', 'password')"></div>
+<div th:if="${param.error}">
+    Invalid username or password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> User Name : <input type="text" name="username" autofocus/> </label></div>
+    <div><label> Password : <input type="password" name="password"/> </label></div>
     <input type="submit" value="Wyślij">
 </form>
 </body>

@@ -25,18 +25,18 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLogin(Model model) {
-        model.addAttribute("form", new LoginForm());
+//        model.addAttribute("form", new LoginForm());
         return "user/login/login";
     }
 
-    @PostMapping("/login")
-    public String postLogin(
-        @ModelAttribute("form") @Valid LoginForm form,
-        BindingResult result,
-        Model model
-    ) {
-        Optional<User> user = userService.findByEmailAndPassword(form.getEmail(), form.getPassword());
-        //TODO add to session or sth
-        return "redirect:/";
-    }
+//    @PostMapping("/login")
+//    public String postLogin(
+//        @ModelAttribute("form") @Valid LoginForm form,
+//        BindingResult result,
+//        Model model
+//    ) {
+//        Optional<User> user = userService.findByEmailAndPassword(form.getEmail(), form.getPassword());
+//        //TODO add to session or sth
+//        return "redirect:/";
+//    }
 }

@@ -1,6 +1,8 @@
 package eu.horyzont.auctions.modules.user;
 
+import eu.horyzont.auctions.web.forms.RegistrationForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -8,14 +10,29 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    private boolean doesEmailExist(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public User register(RegistrationForm form) throws UserAlreadyExistsException {
+        if(doesEmailExist(form.getEmail())) {
+            throw new UserAlreadyExistsException(form.getEmail());
+        }
+
+        return userRepository.save(
+            new User(
+                form.getFirstName(), form.getLastName(),
+                form.getEmail(), bCryptPasswordEncoder.encode(form.getPassword())
+            )
+        );
     }
 
     public Optional<User> findById(Long id) {

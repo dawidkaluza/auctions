@@ -6,17 +6,17 @@ import eu.horyzont.auctions.modules.item.Item;
 import eu.horyzont.auctions.modules.item.ItemImage;
 import eu.horyzont.auctions.modules.item.ItemImageService;
 import eu.horyzont.auctions.modules.item.ItemService;
+import eu.horyzont.auctions.web.forms.ItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,8 +53,8 @@ public class AuctionController {
         return "auction/auctions";
     }
 
-    @GetMapping("auctions/item/{id}")
-    public String getItem(
+    @GetMapping("auctions/item/{id}/view")
+    public String getViewItem(
         @PathVariable("id") Long id,
         Model model
     ) {
@@ -69,10 +69,20 @@ public class AuctionController {
         return "auction/item";
     }
 
+    @GetMapping("auctions/item/add")
+    public String getAddItem(Model model) {
+        //TODO send categories
+        model.addAttribute("form", new ItemForm());
+        return "auction/add-item";
+    }
+
     @PostMapping("auctions/item/add")
-    public String postAddItem() {
-        //TODO get item from form, save in db and provide result
-        return "auction/auctions";
+    public String postAddItem(
+        @ModelAttribute("form") @Valid ItemForm form,
+        BindingResult result,
+        Model model
+    ) {
+        return "auction/add-item";
     }
 
     @PostMapping("auctions/item/{id}/bid/add")

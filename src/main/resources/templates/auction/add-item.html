@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Dodaj przedmiot</title>
 </head>
 <body>
-
+<form th:action="@{/auctions/item/add}" th:object="${form}" method="post">
+    <div th:insert="forms/form-field :: formField ('Nazwa', 'name', 'text')"></div>
+    <div th:insert="forms/form-field :: formField ('Cena początkowa', 'initialPrice', 'text')"></div>
+    <div th:insert="forms/form-field :: formField ('Koniec aukcji', 'auctionEnd', 'text')"></div>
+    <div th:insert="forms/form-field :: formField ('ID kategorii', 'categoryId', 'text')"></div>
+    <input type="submit" value="Wyślij">
+</form>
 </body>
 </html>
