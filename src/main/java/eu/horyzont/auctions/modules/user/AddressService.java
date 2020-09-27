@@ -1,5 +1,6 @@
 package eu.horyzont.auctions.modules.user;
 
+import eu.horyzont.auctions.web.forms.AddressForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,18 @@ public class AddressService {
 
     public void delete(Address address) {
         addressRepository.delete(address);
+    }
+
+    public Address addAddress(AddressForm form, User user) {
+        Address address = new Address(form.getStreet(), form.getZipcode(), form.getCity(), user);
+        addressRepository.save(address);
+        return address;
+    }
+
+    public void updateAddress(Address address, AddressForm form) {
+        address.setStreet(form.getStreet());
+        address.setZipcode(form.getZipcode());
+        address.setCity(form.getCity());
+        addressRepository.save(address);
     }
 }

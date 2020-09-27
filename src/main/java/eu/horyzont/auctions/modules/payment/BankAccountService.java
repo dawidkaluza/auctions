@@ -1,6 +1,7 @@
 package eu.horyzont.auctions.modules.payment;
 
 import eu.horyzont.auctions.modules.user.User;
+import eu.horyzont.auctions.web.forms.BankAccountForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,18 @@ public class BankAccountService {
 
     public void delete(BankAccount bankAccount) {
         bankAccountRepository.delete(bankAccount);
+    }
+
+    public BankAccount addBankAccount(BankAccountForm form, User user) {
+        BankAccount bankAccount = new BankAccount(form.getBankName(), form.getSwiftCode(), form.getIban(), user);
+        bankAccountRepository.save(bankAccount);
+        return bankAccount;
+    }
+
+    public void updateBankAccount(BankAccount bankAccount, BankAccountForm form) {
+        bankAccount.setBankName(form.getBankName());
+        bankAccount.setIban(form.getIban());
+        bankAccount.setSwiftCode(form.getSwiftCode());
+        bankAccountRepository.save(bankAccount);
     }
 }

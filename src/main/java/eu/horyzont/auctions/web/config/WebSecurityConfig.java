@@ -1,70 +1,75 @@
 package eu.horyzont.auctions.web.config;
 
+import eu.horyzont.auctions.modules.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
-import javax.sql.DataSource;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final DataSource dataSource;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-            .usersByUsernameQuery("select email principal, encoded_password credentials, true from users where email = ?")
-            .authoritiesByUsernameQuery("select ? principal, 'ROLE_USER' \"role\"")
-            .passwordEncoder(new BCryptPasswordEncoder())
-            .rolePrefix("ROLE_");
-
-//        auth.inMemoryAuthentication()
-//            .withUser("developer")
-//            .password("{noop}developer")
-//            .roles("USER");
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/", "/register").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-            .logout()
-                .permitAll()
-                .logoutSuccessUrl("/");
+        http.csrf()
+            .disable();
+
+        http.authorizeRequests()
+            .antMatchers("/", "/registration").permitAll()
+//            .anyRequest().permitAll();
+            .anyRequest().authenticated();
+
+        http.formLogin()
+            .loginPage("/login")
+            .permitAll();
+
+        http.logout()
+            .permitAll()
+            .logoutSuccessUrl("/")
+            .deleteCookies("JSESSIONID");
+
+//        http.httpBasic();
+
+//        http.headers()
+//            .frameOptions().disable();
+        http.rememberMe()
+            .tokenRepository(tokenRepository())
+            .tokenValiditySeconds(86400);
     }
 
-//    @Bean
-//    @Override
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails user =
-//            User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        return new InMemoryTokenRepositoryImpl();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 }

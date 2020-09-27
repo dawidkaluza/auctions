@@ -1,5 +1,7 @@
 package eu.horyzont.auctions.web.forms;
 
+import eu.horyzont.auctions.modules.payment.BankAccount;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,6 +20,16 @@ public class BankAccountForm {
     @NotNull
     @Min(28)
     private String iban;
+
+    public BankAccountForm() {
+    }
+
+    public BankAccountForm(BankAccount account) {
+        id = account.getId();
+        bankName = account.getBankName();
+        swiftCode = account.getSwiftCode();
+        iban = account.getIban();
+    }
 
     public Long getId() {
         return id;

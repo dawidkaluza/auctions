@@ -32,6 +32,7 @@ public class Bid {
         this.user = user;
     }
 
+    @PrePersist
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();

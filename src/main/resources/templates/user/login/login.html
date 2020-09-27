@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:insert="fragments/head :: head ('Logowanie')"></head>
 <body>
+<div th:insert="fragments/header :: header ('Logowanie')"></div>
 <div th:if="${param.error}">
-    Invalid username or password.
+    Nieprawidłowy e-mail lub hasło.
 </div>
 <div th:if="${param.logout}">
-    You have been logged out.
+    Zostałeś wylogowany.
 </div>
 <form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username" autofocus/> </label></div>
-    <div><label> Password : <input type="password" name="password"/> </label></div>
-    <input type="submit" value="Wyślij">
+    <div><label> E-mail : <input type="text" id="username" name="username" autofocus/> </label></div>
+    <div><label> Hasło : <input type="password" id="password" name="password"/> </label></div>
+    <div><label> <input type="checkbox" name="remember-me"/> Zapamiętaj mnie </label></div>
+    <input name="submit" type="submit" value="Zaloguj się">
 </form>
 </body>
 </html>

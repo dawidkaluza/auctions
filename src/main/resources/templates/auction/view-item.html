@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Podgląd przedmiotu')"></head>
+<body>
+<div th:insert="fragments/header :: header ('Podgląd przedmiotu')"></div>
+<ul>
+  <li>
+    Nazwa:
+    <span th:text="${item.name}"></span>
+  </li>
+  <li>
+    Kończy się:
+    <span th:text="${item.auctionEnd}"></span>
+  </li>
+  <li>
+    Oferty:
+    <ol th:each="bid: ${bids}">
+      <li>
+        <span th:text="${bid.user.firstName + ' ' + bid.user.lastName + ', oferta: ' + bid.offer}"></span>
+      </li>
+    </ol>
+  </li>
+</ul>
+<h1>Postaw ofertę</h1>
+<form th:action="${'/auctions/item/' + item.id + '/view'}" th:object="${bidForm}" method="post">
+  <input type="hidden" name="itemId" th:value="${item.id}">
+  <div th:insert="fragments/form-field :: formField ('Oferta', 'offer', 'text')"></div>
+  <input type="submit" value="Postaw">
+</form>
+</body>
+</html>

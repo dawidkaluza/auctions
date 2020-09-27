@@ -1,4 +1,4 @@
-package eu.horyzont.auctions.web.constraints;
+package eu.horyzont.auctions.web.validators;
 
 import eu.horyzont.auctions.web.forms.RegistrationForm;
 

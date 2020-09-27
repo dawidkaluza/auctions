@@ -1,33 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>My account</title>
-</head>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Moje konto')"></head>
 <body>
-<!--
-TODO ostylowac
--->
+<div th:insert="fragments/header :: header ('Moje konto')"></div>
 
-<div th:replace="fragments/logged-user-bar :: loggedUserBar">
-
-
+<h1>Adresy</h1>
 <ul th:each="address: ${addresses}">
-    <li th:text="${address.street + ', ' + address.zipcode + ' ' + address.city}"></li>
-    <li><a th:href="@{'/user/my-account/address/' + ${address.id} + '/edit'}">Edycja</a></li>
-    <li><a th:href="@{'/user/my-account/address/' + ${address.id} + '/delete'}">Usun</a></li>
+  <li>
+    <span th:text="${address.street + ', ' + address.zipcode + ' ' + address.city}"></span>
+    <a th:href="@{'/user/my-account/address/' + ${address.id} + '/edit'}">Edycja</a>
+    <a th:href="@{'/user/my-account/address/' + ${address.id} + '/delete'}">Usun</a>
+  </li>
 </ul>
+<a th:href="@{/user/my-account/address/add}">Dodaj</a>
 
+<h1>Konta bankowe</h1>
 <ul th:each="bankAccount: ${bankAccounts}">
-    <li th:text="${bankAccount.bankName + ', nr konta: ' + bankAccount.iban}"></li>
-    <li><a th:href="@{'/user/my-account/bank-account/' + ${bankAccount.id} + '/edit'}">Edycja</a></li>
-    <li><a th:href="@{'/user/my-account/bank-account/' + ${bankAccount.id} + '/delete'}">Usun</a></li>
+  <li>
+    <span th:text="${bankAccount.bankName + ', nr konta: ' + bankAccount.iban}"></span>
+    <a th:href="@{'/user/my-account/bank-account/' + ${bankAccount.id} + '/edit'}">Edycja</a>
+    <a th:href="@{'/user/my-account/bank-account/' + ${bankAccount.id} + '/delete'}">Usun</a>
+  </li>
 </ul>
+<a th:href="@{/user/my-account/bank-account/add}">Dodaj</a>
 
+<h1>Karty kredytowe</h1>
 <ul th:each="creditCard: ${creditCards}">
-    <li th:text="${'Number: ' + creditCard.number}"></li>
-    <li><a th:href="@{'/user/my-account/credit-card/' + ${creditCard.id} + '/edit'}">Edycja</a></li>
-    <li><a th:href="@{'/user/my-account/credit-card/' + ${creditCard.id} + '/delete'}">Usun</a></li>
+  <li>
+    <span th:text="${'Numer: ' + creditCard.number}"></span>
+    <a th:href="@{'/user/my-account/credit-card/' + ${creditCard.id} + '/edit'}">Edycja</a>
+    <a th:href="@{'/user/my-account/credit-card/' + ${creditCard.id} + '/delete'}">Usun</a>
+  </li>
 </ul>
+<a th:href="@{/user/my-account/credit-card/add}">Dodaj</a>
+
 </body>
 </html>

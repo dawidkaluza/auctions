@@ -1,6 +1,7 @@
 package eu.horyzont.auctions.web.forms;
 
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class ItemForm {
     private BigDecimal initialPrice;
 
     @FutureOrPresent
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime auctionEnd;
 
     @NotNull

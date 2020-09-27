@@ -1,5 +1,7 @@
 package eu.horyzont.auctions.web.forms;
 
+import eu.horyzont.auctions.modules.user.Address;
+
 import javax.validation.constraints.Size;
 
 public class AddressForm {
@@ -13,6 +15,16 @@ public class AddressForm {
 
     @Size(min = 3, max = 32)
     private String city;
+
+    public AddressForm() {
+    }
+
+    public AddressForm(Address address) {
+        id = address.getId();
+        street = address.getStreet();
+        zipcode = address.getZipcode();
+        city = address.getCity();
+    }
 
     public Long getId() {
         return id;

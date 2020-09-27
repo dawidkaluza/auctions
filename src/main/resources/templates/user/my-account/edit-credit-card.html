@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Edytuj kartę kredytową')"></head>
 <body>
-<!--
-TODO formularz
-    method=post
-    action=/user/my-account/credit-card/{id}/edit
-    pola: id (hidden), number, cvv, expireDate
--->
+<div th:insert="fragments/header :: header ('Edytuj kartę kredytową')"></div>
+<form th:action="@{/user/my-account/credit-card/edit}" th:object="${form}" method="post">
+  <input type="hidden" th:field="*{id}">
+  <div th:insert="fragments/form-field :: formField ('Numer', 'number', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('CVV', 'cvv', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('Data ważności', 'expireDate', 'text')"></div>
+  <input type="submit" value="Wyślij">
+</form>
 </body>
 </html>

@@ -1,11 +1,13 @@
 package eu.horyzont.auctions.modules.bid;
 
+import eu.horyzont.auctions.modules.item.Item;
+import eu.horyzont.auctions.modules.user.User;
+import eu.horyzont.auctions.web.forms.BidForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BidService {
@@ -16,11 +18,23 @@ public class BidService {
         this.bidRepository = bidRepository;
     }
 
-    public Page<Bid> findAll(Pageable pageable) {
-        return bidRepository.findAll(pageable);
+    public List<Bid> findBidsOrderedByOfferDesc(Item item) {
+        return bidRepository.findAllByItemOrderByOfferDesc(item);
     }
 
-//    public Page<Bid> findAllByIds(List<Long> ids, Pageable pageable) {
-//        return bidRepository.findAllByIds(ids, pageable);
-//    }
+    public void updateBid(BidForm bidForm, Item item, User user) throws NewBidMustBeGreaterException {
+        Optional<Bid> optionalBid = bidRepository.findByItemAndUser(item, user);
+        Bid bid;
+        if (optionalBid.isPresent()) {
+            bid = optionalBid.get();
+            if(bidForm.getOffer().compareTo(bid.getOffer()) <= 0) {
+                throw new NewBidMustBeGreaterException();
+            }
+
+            bid.setOffer(bidForm.getOffer());
+        } else {
+            bid = new Bid(bidForm.getOffer(), item, user);
+        }
+        bidRepository.save(bid);
+    }
 }

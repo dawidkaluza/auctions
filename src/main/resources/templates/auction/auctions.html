@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:insert="fragments/head :: head ('Aukcje')"></head>
 <body>
-<h1>Przedmioty: </h1>
+<div th:insert="fragments/header :: header ('Aukcje')"></div>
 <ul th:each="item: ${items}">
-    <li th:text="${'Oferta: ' + item.name}"></li>
+  <li>
+    <p th:text="${'Przedmiot: ' + item.name}"></p>
+    <a th:href="${'/auctions/item/' + item.id + '/view/'}">Podgląd</a>
+  </li>
 </ul>
+<a th:href="${'/auctions/item/add'}">Dodaj</a>
 <!--
-TODO lista z aktywnymi przedmiotami i mala szukajka z kategoriami, stronnicowaniem itd
+TODO mala szukajka z kategoriami, stronnicowaniem itd
 -->
 </body>
 </html>

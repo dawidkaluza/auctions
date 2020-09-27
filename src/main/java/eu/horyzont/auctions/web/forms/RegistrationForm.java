@@ -1,6 +1,6 @@
 package eu.horyzont.auctions.web.forms;
 
-import eu.horyzont.auctions.web.constraints.PasswordMatches;
+import eu.horyzont.auctions.web.validators.PasswordMatches;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

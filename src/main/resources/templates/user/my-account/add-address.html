@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Dodaj adres')"></head>
 <body>
-<h1>Dodaj adres</h1>
+<div th:insert="fragments/header :: header ('Dodaj adres')"></div>
 <form th:action="@{/user/my-account/address/add}" th:object="${form}" method="post">
-    <div th:insert="fragments/form-field :: formField ('Ulica', 'street')"></div>
-    <div th:insert="fragments/form-field :: formField ('Kod pocztowy', 'zipcode')"></div>
-    <div th:insert="fragments/form-field :: formField ('Miasto', 'city')"></div>
-    <input type="submit" value="Wyślij">
+  <div th:insert="fragments/form-field :: formField ('Ulica', 'street', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('Kod pocztowy', 'zipcode', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('Miasto', 'city', 'text')"></div>
+  <input type="submit" value="Wyślij">
 </form>
 </body>
 </html>

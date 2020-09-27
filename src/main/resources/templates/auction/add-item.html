@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Dodaj przedmiot</title>
-</head>
+<head th:insert="fragments/head :: head ('Dodaj przedmiot')"></head>
 <body>
+<div th:insert="fragments/header :: header ('Dodaj przedmiot')"></div>
 <form th:action="@{/auctions/item/add}" th:object="${form}" method="post">
-    <div th:insert="forms/form-field :: formField ('Nazwa', 'name', 'text')"></div>
-    <div th:insert="forms/form-field :: formField ('Cena początkowa', 'initialPrice', 'text')"></div>
-    <div th:insert="forms/form-field :: formField ('Koniec aukcji', 'auctionEnd', 'text')"></div>
-    <div th:insert="forms/form-field :: formField ('ID kategorii', 'categoryId', 'text')"></div>
-    <input type="submit" value="Wyślij">
+  <div th:insert="fragments/form-field :: formField ('Nazwa', 'name', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('Cena początkowa (grosze oddzielone kropką)', 'initialPrice', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('Koniec aukcji', 'auctionEnd', 'datetime-local')"></div>
+  <label>
+    Kategoria:
+    <select name="categoryId">
+      <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+    </select>
+  </label>
+  <input type="submit" value="Dodaj">
 </form>
 </body>
 </html>

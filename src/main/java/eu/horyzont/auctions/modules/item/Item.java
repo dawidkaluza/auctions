@@ -27,8 +27,6 @@ public class Item {
     @ManyToOne(optional = false)
     private Category category;
 
-
-
     protected Item() {
     }
 

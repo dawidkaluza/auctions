@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Błąd')"></head>
+<body>
+<div th:insert="fragments/header :: header ('Błąd')"></div>
+<div>
+  Treść:
+  <p th:text="${errorMsg}"></p>
+</div>
+</body>
+</html>

@@ -14,5 +14,5 @@ interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(
         value = "SELECT i FROM item i WHERE i.category.id IN :ids ORDER BY i.id"
     )
-    Page<Item> findAllByIds(@Param("ids") Set<Long> ids, Pageable pageable);
+    Page<Item> findAllByCategoriesIds(@Param("ids") Set<Long> ids, Pageable pageable);
 }

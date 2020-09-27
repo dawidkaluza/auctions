@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/head :: head ('Edytuj konto bankowe')"></head>
 <body>
-
-<!--
-TODO formularz
-    method=post
-    action=/user/my-account/bank-account/{id}/edit
-    pola: id (hidden), bankName, swiftCode, iban
--->
+<div th:insert="fragments/header :: header ('Edytuj konto bankowe')"></div>
+<form th:action="@{/user/my-account/bank-account/edit}" th:object="${form}" method="post">
+  <input type="hidden" th:field="*{id}">
+  <div th:insert="fragments/form-field :: formField ('Nazwa banku', 'bankName', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('SWIFT', 'swiftCode', 'text')"></div>
+  <div th:insert="fragments/form-field :: formField ('IBAN', 'iban', 'text')"></div>
+  <input type="submit" value="Wyślij">
+</form>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package eu.horyzont.auctions.web.constraints;
+package eu.horyzont.auctions.web.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
